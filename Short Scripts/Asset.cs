@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Asset : MonoBehaviour
 {
-    public PlayerInfo player;
+    //public PlayerInfo player;
     public int money=1923870000;
     void Start()
     {

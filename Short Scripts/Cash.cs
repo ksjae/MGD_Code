@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Cash : MonoBehaviour
 {
-    public PlayerInfo player;
+    //public PlayerInfo player;
     public int money=3728400;
     void Start()
     {

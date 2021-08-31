@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TimeReader : MonoBehaviour
 {
-    public PlayerInfo player;
+    //public PlayerInfo player;
     public System.DateTime date = System.DateTime.Now;
     void Start()
     {

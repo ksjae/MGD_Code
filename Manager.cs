@@ -4,8 +4,7 @@ using System.Linq;
 using System;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Company", menuName = "Scriptable Object/Company", order = int.MaxValue)]
-public class PlayerInfo : ScriptableObject
+public class Manager : MonoBehaviour
 {
     [SerializeField]
     private Company company;
@@ -30,7 +29,8 @@ public class PlayerInfo : ScriptableObject
         _date.Add(duration);
     }
 
-    public PlayerInfo(int startCash=100000){
+    void Start(){
+        int startCash=100000;
         this.company = new Company("다국어 IMETEST", startCash);
     }
 }

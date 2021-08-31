@@ -10,13 +10,14 @@ public class FanDrawer : MonoBehaviour
     public GameObject graphBar;
     public Material UIMaterial;
     public int count=0, margin=0;
-    public PlayerInfo player;
+    [SerializeField] Manager state;
 
     UnityEvent dayPasses = new UnityEvent();
-    private int[] _followerHistory={51245,12347,65123,12635,65431,12354,55374,33521,57374,12762,78472,67312};
+    private int[] _followerHistory={0,0,0,0,0,0,0,0,0,0,0,0};
     private int maxVal = 1;
     void Start()
     {
+        _followerHistory = state.FollowerHistory(12);
         maxVal = _followerHistory.Max();
         if (maxVal == 0){ //STOP DBZ
             maxVal = 1;
