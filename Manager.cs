@@ -20,17 +20,30 @@ public class Manager : MonoBehaviour
         return _followerHistory.Take(unit).ToArray();
     }
 
+    public int TimeToNextDay {get; set;} // in seconds in real time
     private DateTime _date = new DateTime(1970,1,1);
     public DateTime Date {
         get => _date;
     }
     public void PassDay(int days=1){
-        TimeSpan duration = new TimeSpan(days, 0, 0, 0);
-        _date.Add(duration);
+        _date = _date.AddDays(days);
     }
 
     void Start(){
         int startCash=100000;
-        this.company = new Company("다국어 IMETEST", startCash);
+        company = new Company("Click & Go Co.", startCash);
+        StartCoroutine(PassTime());
+    }
+
+    IEnumerator PassTime(){
+        for(;;){
+            Debug.Log(_date);
+            if (TimeToNextDay == 0){
+                yield return new WaitForSeconds(0.1f);
+            } else {
+                PassDay();
+                yield return new WaitForSeconds(TimeToNextDay);
+            }
+        }
     }
 }

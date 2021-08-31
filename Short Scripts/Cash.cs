@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Cash : MonoBehaviour
 {
-    //public PlayerInfo player;
+    [SerializeField] Manager state;
     public int money=3728400;
     void Start()
     {
-        
+        money = state.Company.cash;
     }
 
     // Update is called once per frame

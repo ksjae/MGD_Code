@@ -10,12 +10,14 @@ public class RevDrawer : MonoBehaviour
     public GameObject graphBar;
     public Material UIMaterial;
     public int count=0, margin=0;
+    [SerializeField] Manager state;
 
     UnityEvent dayPasses = new UnityEvent();
     private int[] _revenueHistory={34632,34765,31857,98121,21634,21389,21347,56432,23476,76584,12347,87652};
     private int maxVal = 1;
     void Start()
     {
+        _revenueHistory = state.RevenueHistory(12);
         maxVal = _revenueHistory.Max();
         Draw();
         dayPasses.AddListener(Draw);

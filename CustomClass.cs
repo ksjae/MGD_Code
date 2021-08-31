@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -8,19 +9,15 @@ public class Item {
     private static int currentID;
 
     protected int ID {get; set; }
-    protected string Name {get; set;}
-    protected string Description {get; set;}
+    public string Name {get; set;}
+    public string Description {get; set;}
 
-    public Item() {
-        ID=0;
-        Name = "Default Name";
-        Description = "Nothing.";
-    }
+    public Item() {}
 
     public Item(string title, string desc="") {
-        this.ID = GetNextID();
-        this.Name = title;
-        this.Description = desc;
+        ID = GetNextID();
+        Name = title;
+        Description = desc;
     }
 
     // Static constructor to initialize the static member, currentID. This
@@ -28,10 +25,6 @@ public class Item {
     // of WorkItem or ChangeRequest is created, or currentID is referenced.
     static Item() => currentID = 0;
     protected int GetNextID() => ++currentID;
-    public void Update(string title, string desc){
-        this.Name = title;
-        this.Description = desc;
-    }
 
     public static float RandomGaussian(float minValue = 0.0f, float maxValue = 1.0f)
     {
@@ -102,7 +95,8 @@ public class WorkPoint
 
 public class Employee: Item {
 
-    public WorkPoint performance;
+    public WorkPoint workPoint;
+    public int burnout=0;
     public Employee(){}
     public Employee(TaskType mainPerf, int mainPerfGoal=10, int subPerfGoal=5) {
         this.Name = "Name TBA";
@@ -114,6 +108,38 @@ public class Employee: Item {
         */
     }
     
+    
+}
+
+public class Team {
+    public Task currentTask{get; set;}
+    private Employee[] _employeeList;
+    public void AddEmployee(int id){
+
+    }
+    public void RemoveEmployee(int id){
+
+    }
+    public int efficiency {
+        get {
+            return (int)_employeeList.Average(person => person.burnout);
+        }
+    }
+    public void Boost(int negativeBurnout){  //Reduce burnout by negativeBurnout
+        for (int i=0;i<_employeeList.Length;i++){
+            _employeeList[i].burnout-=negativeBurnout;
+            if (_employeeList[i].burnout < 0){
+                _employeeList[i].burnout = 0;
+            }
+        }
+    }
+    public float performance() {
+        return 1.0f;
+    }
+    
+    public void ProcessDayTask(){
+        
+    }
 }
 
 public class GameProject: Item {
@@ -123,11 +149,9 @@ public class GameProject: Item {
 [System.Serializable]
 public class Company: Item
 {
-    int asset=0, cash=0;
+    public int asset=0, cash=0;
     public Company(){}
-    public Company(string name, int startCash){
+    public Company(string name, int startCash, string desc="None"): base(name, desc){
         this.cash = startCash;
-        this.Name = name;
-
     }
 }

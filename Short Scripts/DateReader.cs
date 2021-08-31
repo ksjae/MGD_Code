@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TimeReader : MonoBehaviour
+public class DateReader : MonoBehaviour
 {
-    //public PlayerInfo player;
-    public System.DateTime date = System.DateTime.Now;
+    [SerializeField] Manager state;
+    public System.DateTime date;
     void Start()
     {
         
@@ -14,6 +14,6 @@ public class TimeReader : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        date = state.Date;
     }
 }
