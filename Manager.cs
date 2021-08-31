@@ -37,7 +37,6 @@ public class Manager : MonoBehaviour
 
     IEnumerator PassTime(){
         for(;;){
-            Debug.Log(_date);
             if (TimeToNextDay == 0){
                 yield return new WaitForSeconds(0.1f);
             } else {
