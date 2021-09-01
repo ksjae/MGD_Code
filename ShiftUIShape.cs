@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class ShiftUIShape : MonoBehaviour
 {
-    public RectTransform BigSideBarRT, SmallSideBarRT, ContentRT;
+    [SerializeField] GameObject BigSideBar, SmallSideBar;
+    [SerializeField] RectTransform ContentRT;
     private bool isbarMin = false;
     private bool isGlobalView = false;
     void Start()
@@ -19,18 +20,18 @@ public class ShiftUIShape : MonoBehaviour
 
     public void OnClickMinMax(){
         isbarMin = !isbarMin;
-        /*
         if (isbarMin){
-            BigSideBarRT.rect.x -= BigSideBarRT.rect.width;
-            SmallSideBarRT.rect.x += SmallSideBarRT.rect.width;
-            ContentRT.rect.x = SmallSideBarRT.rect.width/2;
+            BigSideBar.SetActive(false);
+            SmallSideBar.SetActive(true);
+            ContentRT.sizeDelta = new Vector2(1920-80,0);
+            ContentRT.anchoredPosition = new Vector2(40,0);
             
         } else {
-            BigSideBarRT.rect.x += BigSideBarRT.rect.width;
-            SmallSideBarRT.rect.x -= SmallSideBarRT.rect.width;
-            ContentRT.rect.x = BigSideBarRT.rect.width/2;
+            BigSideBar.SetActive(true);
+            SmallSideBar.SetActive(false);
+            ContentRT.sizeDelta = new Vector2(1920-250,0);
+            ContentRT.anchoredPosition = new Vector2(125,0);
         }
-        */
     }
     public void OnClickGoGlobalView(){
 
