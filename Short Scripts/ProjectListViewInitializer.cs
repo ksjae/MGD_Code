@@ -2,11 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameProjSummaryUpadter : MonoBehaviour
+public class ProjectListViewInitializer : MonoBehaviour
 {
-    [SerializeField] Manager state;
-    int projectID=0;
-    // Start is called before the first frame update
+    [SerializeField] Manager status;
     void Start()
     {
         

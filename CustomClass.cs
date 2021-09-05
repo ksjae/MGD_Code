@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 using UnityEngine;
 
 
@@ -63,6 +64,7 @@ public class Task {
     protected int required {get; set;}
     protected int done {get;set;}
     protected string name {get;set;}
+    public int cost{get;set;}
     public TaskType type;
     public double progress {
         get { return done/required * 100; }
@@ -73,12 +75,16 @@ public class Task {
                 done = (int)(required * value / 100);
         }
     }
+    public bool isCompleted{
+        get {return (done >= required);}
+    }
     public Task() {}
-    public Task(string taskName, TaskType taskType, int pointsRequired) {
+    public Task(string taskName, TaskType taskType, int pointsRequired, int cost) {
         this.done = 0;
         this.required = pointsRequired;
         this.name = taskName;
         this.type = taskType;
+        this.cost = cost;
     }
 }
 
@@ -92,6 +98,8 @@ public class WorkPoint
         this.point[(int)TaskType.Audio] = audio;
     }
 }
+
+
 
 public class Employee: Item {
 
@@ -142,16 +150,128 @@ public class Team {
     }
 }
 
+public class GameConfig {
+
+}
+
+/***
+
+What consists of GameProject: A top-down approach
+
+- Tasks make a game
+    * There are 'required' tasks and 'optional' tasks.
+    * Required tasks are ADDED ON CREATION (pervent DBZ)
+
+- After development completion, game is first evaluated.
+    * "Professional" evaluation score
+    * People's expectation from game (user satisfaction)
+
+- And it will sell.
+    * Units sold & earnings
+    * call func. to sell for a unit of time
+    * after retrieved from shelf, marked 'not selling'
+
+***/
+
 public class GameProject: Item {
-    
+    private int design, bug, qa; //design,qa equals actual percentage
+    private GameConfig config;
+    private int _unitSales, _sales;
+    public void makeSale(int unit, int price){
+        _unitSales += unit;
+        _sales += unit*price;
+    }
+    private int evalPts, satisfactionPts;
+    private int[] _points = {0,0,0,0,0,0,0,0,0,0,0,0};
+    public int pointsByType(TaskType taskType){
+        return _points[(int)taskType];
+    }
+    public void AddPoints(int[] points){
+        for(int i=0;i<points.Length;i++){
+            _points[i] += points[i];
+        }
+    }
+    public void AddPoint(int point, TaskType taskType){
+        _points[(int)taskType] += point;
+    }
+    public bool isFinished(){
+        foreach(Task t in Tasks){
+            if (!t.isCompleted){
+                return false;
+            }
+        }
+        return true;
+    }
+    public List<Task> Tasks{get;}
+    public int CancelTask(Task t){ //returns cashback from canceled task
+        Tasks.Remove(t);
+        return (int)(t.cost * (1-t.progress));
+    }
+    public List<Task> pendingTasks{
+        get { return Tasks.FindAll(task => task.isCompleted == false);}
+    }
+    //TODO: Implement proper design/qa scoring metric via Task scanning
+    public int designStat(){
+        return design;
+    }
+    public int codeStat(){
+        return bug;
+    }
+    public int qaStat(){
+        return qa;
+    }
+    public GameProject(){}
+    public GameProject(string name, string desc, GameConfig gameConfig): base(name, desc){
+        config = gameConfig;
+    }
 }
 
 [System.Serializable]
 public class Company: Item
 {
     public int asset=0, cash=0;
+    private Employee[] unplaced;
+    private Team[] teams;
     public Company(){}
     public Company(string name, int startCash, string desc="None"): base(name, desc){
         this.cash = startCash;
+    }
+    private List<GameProject> _gameProj;
+    public List<GameProject> GamesInMaking(bool showAll=false){
+        var queryResult = new List<GameProject>();
+        foreach(GameProject proj in _gameProj){
+            if (!proj.isFinished()){
+                queryResult.Add(proj);
+            }
+        }
+        return queryResult;
+    }
+    public List<GameProject> GameProjects(){
+        return _gameProj;
+    }
+    public void MakeProject(GameProject proj){
+        _gameProj.Add(proj);
+    }
+    public void ScrapProject(GameProject proj){
+        //cancel all task
+        foreach (Task pending in proj.pendingTasks){
+            cash += proj.CancelTask(pending);
+        }
+        _gameProj.Remove(proj);
+    }
+    public void Work(){
+        foreach(TaskType taskType in Enum.GetValues(typeof(TaskType))){
+            
+        }
+    }
+    public float satisfaction{
+        get {
+            return 0.8f;
+        }
+    }
+    public float rating{
+        get {
+            return 0.61f;
+        }
     }
 }
