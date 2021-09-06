@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 
 [System.Serializable]
@@ -202,7 +203,7 @@ public class GameProject: Item {
         }
         return true;
     }
-    public List<Task> Tasks{get;}
+    public List<Task> Tasks = new List<Task>();
     public int CancelTask(Task t){ //returns cashback from canceled task
         Tasks.Remove(t);
         return (int)(t.cost * (1-t.progress));
@@ -223,6 +224,10 @@ public class GameProject: Item {
     public GameProject(){}
     public GameProject(string name, string desc, GameConfig gameConfig): base(name, desc){
         config = gameConfig;
+        Tasks.Add(new Task("Basic Design",TaskType.Design,10,0));
+        Tasks.Add(new Task("Copy-paste SO",TaskType.Code,10,0));
+        Tasks.Add(new Task("Pirate sprite",TaskType.Graphic,10,0));
+        Tasks.Add(new Task("Unlicensed audio",TaskType.Audio,10,0));
     }
 }
 
@@ -236,7 +241,7 @@ public class Company: Item
     public Company(string name, int startCash, string desc="None"): base(name, desc){
         this.cash = startCash;
     }
-    private List<GameProject> _gameProj;
+    private List<GameProject> _gameProj = new List<GameProject>();
     public List<GameProject> GamesInMaking(bool showAll=false){
         var queryResult = new List<GameProject>();
         foreach(GameProject proj in _gameProj){
@@ -249,6 +254,7 @@ public class Company: Item
     public List<GameProject> GameProjects(){
         return _gameProj;
     }
+    public UnityEvent GameProjectModified;
     public void MakeProject(GameProject proj){
         _gameProj.Add(proj);
     }

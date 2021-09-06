@@ -30,8 +30,10 @@ public class Manager : MonoBehaviour
     }
 
     void Start(){
-        int startCash=100000;
+        int startCash=13400000;
         company = new Company("Click & Go Co.", startCash);
+        company.asset = 386750000;
+        company.MakeProject(new GameProject("혈흔", "설명있음", new GameConfig()));
         StartCoroutine(PassTime());
     }
 
